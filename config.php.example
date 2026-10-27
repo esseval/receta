@@ -1,0 +1,22 @@
+<?php
+// Copia este archivo a config.php y ajusta lo que necesites. config.php no se commitea.
+// Todos los valores son opcionales: sin config.php funciona igual (solo sin Spoonacular ni correo de MyMemory).
+return [
+    // Clave de Spoonacular (https://spoonacular.com/food-api) — opcional.
+    // Si la dejas vacía, las recetas salen 100% de TheMealDB (sin clave).
+    'spoonacular_key'   => '',
+
+    // Caché server-side (segundos)
+    'cache_ttl'         => 300,    // búsquedas de recetas
+    'meal_ttl'          => 86400,  // detalle de una receta
+    'list_ttl'          => 604800, // listas (ingredientes, zonas, categorías)
+    'translate_ttl'     => 2592000,// traducciones
+
+    // Red
+    'timeout'           => 15,
+    'concurrency'       => 8,      // peticiones simultáneas hacia TheMealDB
+    'user_agent'        => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36',
+
+    // Traducción EN→ES: MyMemory (sin clave) usa un correo para subir la cuota diaria.
+    'translate_email'   => '',
+];

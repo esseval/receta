@@ -1,0 +1,53 @@
+/* ==========================================================================
+   Mi Libro de Recetas — responsive.css
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .detail-head { grid-template-columns: 170px 1fr; }
+  .detail-columns { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 720px) {
+  body { font-size: 14.5px; }
+
+  .header-inner { padding: .7rem .85rem; }
+  .brand-title { font-size: 1.1rem; }
+  .brand-subtitle { font-size: .74rem; }
+  .brand-icon { width: 38px; height: 38px; font-size: 1.15rem; }
+
+  .container { padding: .9rem .8rem 1.6rem; }
+  .card { padding: .95rem .9rem; border-radius: 12px; }
+
+  .section-head { align-items: flex-start; gap: .6rem; }
+  .section-tools { width: 100%; }
+  .input-small { width: 100%; flex: 1; }
+
+  .search-bar { flex-direction: column; }
+  .search-bar .btn { width: 100%; }
+
+  .recipe-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: .7rem; }
+  .recipe-title { font-size: .9rem; }
+  .recipe-actions { flex-direction: column; }
+
+  .dialog, .dialog-wide { width: calc(100vw - 1rem); max-height: calc(100vh - 1rem); }
+  .dialog-inner { padding: .9rem; max-height: calc(100vh - 1rem); }
+
+  .detail-head { grid-template-columns: 1fr; }
+  .detail-img { aspect-ratio: 16/10; }
+  .detail-title { font-size: 1.15rem; }
+
+  .backend-status .status-text { display: none; }
+  .backend-status { padding: .3rem; }
+}
+
+@media (max-width: 420px) {
+  .recipe-grid { grid-template-columns: 1fr 1fr; }
+  .badge { font-size: .68rem; }
+  .btn { font-size: .84rem; padding: .5rem .8rem; }
+}
+
+@media print {
+  .app-header, .app-footer, .search-section, #history-section, .toast, .detail-actions, .recipe-actions { display: none !important; }
+  body { background: #fff; }
+  .card { box-shadow: none; border-color: #ddd; }
+}

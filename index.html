@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Mi Libro de Recetas — busca recetas con los ingredientes que ya tienes, guárdalas con notas y puntuaciones. Sin cuenta, todo local en tu navegador.">
+  <title>Mi Libro de Recetas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <header class="app-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon" aria-hidden="true">📖</div>
+        <div>
+          <h1 class="brand-title">Mi Libro de Recetas</h1>
+          <p class="brand-subtitle">Cocina con lo que ya tienes en casa</p>
+        </div>
+      </div>
+      <nav class="header-actions" aria-label="Acciones principales">
+        <span id="backend-status" class="backend-status" title="Estado del backend" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span><span class="status-text">verificando…</span>
+        </span>
+        <button id="btn-theme" class="btn btn-ghost" aria-label="Cambiar tema claro/oscuro" title="Cambiar tema">
+          <span id="theme-icon">🌙</span>
+        </button>
+        <button id="btn-data" class="btn btn-ghost" aria-label="Gestionar datos">Datos</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" class="container">
+
+    <!-- Buscador -->
+    <section class="card search-section" aria-labelledby="search-title">
+      <div class="section-head">
+        <h2 id="search-title" class="section-title">¿Qué tienes en la cocina?</h2>
+        <div class="tabs" role="tablist" aria-label="Modo de búsqueda">
+          <button type="button" role="tab" id="tab-ingredients" class="tab is-active" aria-selected="true" aria-controls="panel-ingredients">Por ingredientes</button>
+          <button type="button" role="tab" id="tab-name" class="tab" aria-selected="false" aria-controls="panel-name">Por nombre</button>
+        </div>
+      </div>
+
+      <div id="panel-ingredients" role="tabpanel" aria-labelledby="tab-ingredients">
+        <p class="hint">Agrega uno o varios ingredientes: primero te doy las recetas que los usan todos y, si no hay, las que más se parecen.</p>
+
+        <form id="ingredient-form" class="search-bar" autocomplete="off">
+          <label for="ingredient-input" class="sr-only">Ingrediente</label>
+          <input type="text" id="ingredient-input" list="ingredient-list" placeholder="Ej: pollo, arroz, ajo…" aria-describedby="ingredient-help">
+          <datalist id="ingredient-list"></datalist>
+          <button type="submit" class="btn btn-secondary">Agregar</button>
+          <button type="button" id="btn-search" class="btn btn-primary">Buscar recetas</button>
+        </form>
+        <p id="ingredient-help" class="hint">Escribe en español o en inglés; elige del listado o pulsa Enter.</p>
+
+        <div id="chips" class="chips" aria-live="polite" aria-label="Ingredientes seleccionados"></div>
+
+        <div class="search-row">
+          <button type="button" id="btn-clear" class="btn btn-ghost btn-small">Limpiar ingredientes</button>
+          <span id="chips-counter" class="hint"></span>
+        </div>
+      </div>
+
+      <div id="panel-name" role="tabpanel" aria-labelledby="tab-name" hidden>
+        <p class="hint">Busca una receta directamente por su nombre (inglés o el que conozcas).</p>
+        <form id="name-form" class="search-bar" autocomplete="off">
+          <label for="name-input" class="sr-only">Nombre de la receta</label>
+          <input type="search" id="name-input" placeholder="Ej: pasta, curry, pancakes…">
+          <button type="submit" class="btn btn-primary">Buscar por nombre</button>
+        </form>
+      </div>
+
+      <div id="search-status" class="search-status" role="status" aria-live="polite"></div>
+    </section>
+
+    <!-- Resultados -->
+    <section id="results-section" class="card" hidden aria-labelledby="results-title">
+      <div class="section-head">
+        <h2 id="results-title" class="section-title">Resultados</h2>
+        <div class="section-tools">
+          <span id="results-count" class="hint"></span>
+          <label for="sort-select" class="sr-only">Ordenar resultados</label>
+          <select id="sort-select" class="select">
+            <option value="match">Mejor coincidencia</option>
+            <option value="name">Nombre (A-Z)</option>
+            <option value="category">Categoría</option>
+          </select>
+        </div>
+      </div>
+      <div id="results-warnings" class="notice" hidden></div>
+      <div id="results-grid" class="recipe-grid"></div>
+      <div id="results-empty" class="empty-state" hidden>
+        <div class="empty-icon" aria-hidden="true">🥕</div>
+        <h3>Sin coincidencias</h3>
+        <p>No encontré recetas con esos ingredientes. Prueba con menos términos o con el nombre en inglés.</p>
+      </div>
+    </section>
+
+    <!-- Mi libro -->
+    <section id="book-section" class="card" aria-labelledby="book-title">
+      <div class="section-head">
+        <h2 id="book-title" class="section-title">Mi libro</h2>
+        <div class="section-tools">
+          <label for="book-filter" class="sr-only">Filtrar recetas guardadas</label>
+          <input type="search" id="book-filter" class="input-small" placeholder="Filtrar…">
+          <label for="book-rating" class="sr-only">Filtrar por puntuación</label>
+          <select id="book-rating" class="select">
+            <option value="0">Todas</option>
+            <option value="3">3★ o más</option>
+            <option value="4">4★ o más</option>
+            <option value="5">5★</option>
+          </select>
+        </div>
+      </div>
+      <div id="book-grid" class="recipe-grid"></div>
+      <div id="book-empty" class="empty-state">
+        <div class="empty-icon" aria-hidden="true">🍳</div>
+        <h3>Tu libro está vacío</h3>
+        <p>Busca recetas arriba y toca ★ para guardarlas aquí, con tu puntuación y tus notas.</p>
+      </div>
+    </section>
+
+    <!-- Historial -->
+    <section id="history-section" class="card" aria-labelledby="history-title">
+      <div class="section-head">
+        <h2 id="history-title" class="section-title">Historial de búsquedas</h2>
+        <button type="button" id="btn-clear-history" class="btn btn-ghost btn-small">Vaciar historial</button>
+      </div>
+      <div id="history-list" class="chips chips-history"></div>
+      <p id="history-empty" class="hint" hidden>Sin búsquedas todavía: agrega ingredientes y pulsa “Buscar recetas”.</p>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>
+      Recetas e imágenes: <a href="https://www.themealdb.com/" target="_blank" rel="noopener noreferrer">TheMealDB</a><span id="spoon-credit" hidden> · Datos complementarios: <a href="https://spoonacular.com/food-api" target="_blank" rel="noopener noreferrer">Spoonacular</a></span>
+    </p>
+    <p class="hint">Tus favoritos, notas y puntuaciones se guardan solo en este navegador (localStorage). No hay cuenta ni servidor propio.</p>
+  </footer>
+
+  <!-- Modal: detalle de receta -->
+  <dialog id="detail-dialog" class="dialog dialog-wide" aria-labelledby="detail-title">
+    <div class="dialog-inner">
+      <div class="dialog-head">
+        <span class="dialog-kicker" id="detail-source-label"></span>
+        <button type="button" class="btn btn-ghost btn-small" id="detail-close" aria-label="Cerrar detalle">✕ Cerrar</button>
+      </div>
+      <div id="detail-body" class="detail-body"></div>
+    </div>
+  </dialog>
+
+  <!-- Modal: gestión de datos -->
+  <dialog id="data-dialog" class="dialog" aria-labelledby="data-dialog-title">
+    <form method="dialog" class="dialog-inner">
+      <h3 id="data-dialog-title">Gestión de datos</h3>
+      <p class="hint">Exporta, importa o borra tu libro. Todo vive en este navegador.</p>
+
+      <div class="dialog-block">
+        <h4>Exportar</h4>
+        <div class="btn-row">
+          <button type="button" id="btn-export-json" class="btn btn-secondary">Exportar JSON</button>
+          <button type="button" id="btn-export-txt" class="btn btn-secondary">Exportar TXT legible</button>
+        </div>
+      </div>
+
+      <div class="dialog-block">
+        <h4>Importar JSON</h4>
+        <label for="import-file" class="sr-only">Seleccionar archivo JSON</label>
+        <input type="file" id="import-file" accept=".json,application/json">
+        <fieldset class="radio-group">
+          <legend>Modo de importación</legend>
+          <label><input type="radio" name="import-mode" value="merge" checked> Combinar (evita duplicados)</label>
+          <label><input type="radio" name="import-mode" value="replace"> Reemplazar todo</label>
+        </fieldset>
+        <button type="button" id="btn-import" class="btn btn-primary">Importar</button>
+        <div id="import-result" class="import-result" role="status" aria-live="polite"></div>
+      </div>
+
+      <div class="dialog-block danger-zone">
+        <h4>Zona de peligro</h4>
+        <button type="button" id="btn-wipe-all" class="btn btn-danger">Borrar todos los datos</button>
+      </div>
+
+      <div class="dialog-actions">
+        <button type="submit" class="btn btn-ghost">Cerrar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

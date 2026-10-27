@@ -1,0 +1,5 @@
+config.php
+cache/*.json
+!cache/.htaccess
+.DS_Store
+Thumbs.db
